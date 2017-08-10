@@ -1,0 +1,365 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+	{% include 'header.html' %}
+{% endblock %}
+
+
+{% block content %}
+<div class="content">
+	<div class="container">
+      <div class="subHead">
+        <h1>{{ session.firstNm }}&nbsp;{{ session.lastNm }}</h1>
+        <p class="lead">{{ session.today }}</p>
+        <p>Not you?&nbsp;&nbsp;&nbsp;<a class="btn btn btn-success" href="#" role="button" data-toggle="modal" data-target="#changeUser">Login Another User</a>
+        	<div id="changeUser" class="modal fade container" role="dialog">
+				<div class="modal-dialog">
+				<!-- Modal content-->
+					<form action="/" method="post">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Login Another User</h4>
+							</div>
+							<div class="modal-body">
+								<div class="form-group">
+									<label>First Name: </label>
+									<input class="form-control" type="text" name="firstNm" id="firstNm" value="{{ request.form.firstNm }}" />
+								</div>
+								<div class="form-group">
+									<label>Last Name: </label>
+									<input class="form-control" type="text" name="lastNm" id="lastNm" value="{{ request.form.lastNm }}" />
+								</div>
+							</div>
+							<div class="modal-footer">
+								<div class="form-group">
+									<input type="submit" class="btn btn-primary pull-right" name="Confirm" value="Go"></button>
+									<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</p>
+		<p>Not you?&nbsp;&nbsp;&nbsp;<a class="btn btn btn-success" href="#" role="button" data-toggle="modal" data-target="#changeName">Change User Name</a>
+        	<div id="changeName" class="modal fade container" role="dialog">
+				<div class="modal-dialog">
+				<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Change your name</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>First Name: </label>
+								<input class="form-control" type="text" name="firstNm" id="change-firstNm" value="{{ request.form.firstNm }}" />
+							</div>
+							<div class="form-group">
+								<label>Last Name: </label>
+								<input class="form-control" type="text" name="lastNm" id="change-lastNm" value="{{ request.form.lastNm }}" />
+							</div>
+						</div>
+						<div class="modal-footer">
+							<div class="form-group">
+								<button class="btn btn-primary pull-right" name="Confirm" id="change-user-name">Confirm</button>
+								<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</p>
+	</div>
+
+      <!-- Example row of columns -->
+      <div class="row container div-content">
+        <div class="col-md-5" id="list-name">
+			<h2 style="text-align: center;">
+				{% if fstListNm == None %}
+					Create your Item
+				{% else %}
+					{{ fstListNm }}
+				{% endif %}
+			</h2>
+		    <div class="row">
+			    <table class="table" id="tbl-items">
+				    <thead>
+				        <tr>
+				            <th>ID</th>
+				            <th>Item Name</th>
+				            <th>Comment</th>
+				            <th>Status</th>
+				            <th class="text-center">Action</th>
+				        </tr>
+				    </thead>
+				    <tbody>
+		            	{% for item in jsonDataItm %}
+				    		<tr>
+				    			<th>{{ loop.index }}</th>
+				    			<th><a data-id={{ item.id }} class="selectLst">{{ item.itmName }}</a></th>
+				    			<td>{{ item.itmCmt }}</td>
+				    			<td>{{ item.itmState }}</td>
+			                	<td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
+				    		</tr>
+				    	{% endfor %}
+				    </tbody>
+			    </table>
+		    </div>
+		</div>
+        <div class="col-md-5 col-md-offset-2">
+			<h2 style="text-align: center;">
+				{% if fstListNm == None %}
+					Create your List
+				{% else %}
+					Other Lists
+				{% endif %}
+			</h2>
+			<div class="row">
+			    <table class="table" id="tbl-lists">
+				    <thead>
+				    	<tr>
+				            <th>ID</th>
+				            <th>Item</th>
+				            <th>Status</th>
+				            <th class="text-center">Action</th>
+				        </tr>			        
+				    </thead>
+				    <tbody>
+			    	{% for list in jsonData %}
+			    		{% if loop.index == 1 %}
+			    		<tr class="selected">
+			    			<th>{{ loop.index }}</th>
+			    			<th><a data-id={{ list.id }} class="select-list">{{ list.listNm }}</a></th>
+			    			<td>{{ list.state }}</td>
+		                	<td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
+			    		</tr>
+			    		{% else %}
+			    		<tr>
+			    			<th>{{ loop.index }}</th>
+			    			<th><a data-id={{ list.id }} class="select-list">{{ list.listNm }}</a></th>
+			    			<td>{{ list.state }}</td>
+		                	<td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
+			    		</tr>
+			    		{% endif %}
+			    	{% endfor %}
+			    	</tbody>		           	            
+			    </table>
+		    </div>
+        </div>
+	</div>
+	<div class="col-sm-5" style="text-align: center;">		
+		<div class="col-sm-5">
+			<button type="button" class="btn btn-info btn" data-toggle="modal" data-target="#create-item-modal">Create Item</button>
+			<!-- Modal -->
+			<div id="create-item-modal" class="modal fade container" role="dialog">
+				<div class="modal-dialog">
+				<!-- Modal content-->
+					<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Create your Item.</h4>
+					</div>
+					<div class="modal-body">
+						<!-- <table id="modalTblitm"></table> -->
+						<div class="form-group">
+							<label for="create-item-modal-name">Item Name</label>
+							<input type="text" class="form-control" id="create-item-modal-name" />
+						</div>
+						<div class="form-group">
+							<label for="create-item-modal-comment">Comment</label>
+							<input type="text" id="create-item-modal-comment" class="form-control">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="form-group">
+							<button type="button" class="btn btn-primary pull-right" id="create-item-modal-ok">Create & Continue</button>
+							<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-5 col-sm-offset-2">
+			<button type="button" class="btn btn-info btn" data-toggle="modal" data-target="#change-item-modal">Change Item</button>
+			<!-- Modal -->
+			<div id="change-item-modal" class="modal fade container" role="dialog">
+				<div class="modal-dialog">
+				<!-- Modal content-->
+					<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Change your Item.</h4>
+					</div>
+					<div class="modal-body">
+						<div class="table-responsive">
+						    <table class="table" id="tbl-modal-items">
+						        <thead class="thead-inverse">
+						            <tr>
+						            	<th>ID</th>
+							            <th>Item Name</th>
+							            <th>Comment</th>
+							            <th>Status</th>
+						            </tr>
+						        </thead>
+						        <tbody>
+						        </tbody>
+						    </table>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="form-group">
+							<button type="button" class="btn btn-primary pull-right" id="change-item">Change</button>
+							<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+	<div class="col-sm-5 col-md-offset-2" style="text-align: center;">		
+		<div class="col-sm-5">
+			<button type="button" class="btn btn-info btn" data-toggle="modal" data-target="#create-list-modal">Create List</button>
+			<!-- Modal -->
+			<div id="create-list-modal" class="modal fade container" role="dialog">
+				<div class="modal-dialog">
+				<!-- Modal content-->
+					<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Create your List.</h4>
+					</div>
+					<div class="modal-body">
+						<!-- <table id="modalTbl"></table> -->
+						<input class="form-control" type="text" id="create-modal-list-name">
+					</div>
+					<div class="modal-footer">
+						<div class="form-group">
+							<button type="button" id="create-list-ok" class="pull-right btn btn-primary">Create</button>
+							<button type="button"  id="create-list-close" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-5 col-sm-offset-2">
+			<button type="button" class="btn btn-info btn" data-toggle="modal" data-target="#myModal1">Change List</button>
+			<!-- Modal -->
+			<div id="myModal1" class="modal fade container" role="dialog">
+				<div class="modal-dialog">
+				<!-- Modal content-->
+					<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Change your List.</h4>
+					</div>
+					<div class="modal-body">
+						<div class="table-responsive">
+						    <table class="table" id="tbl-change-list">
+						        <thead>
+						            <tr>
+						            	<th>ID</th>
+							            <th>Item</th>
+							            <th>Status</th>
+						            </tr>
+						        </thead>
+						        <tbody>
+						        {% for list in jsonDataAll %}
+						    		<tr>
+						    			<td>{{ loop.index }}</td>
+						    			<td><a data-id={{ list.id }} class="selectLst"><input type="text" value="{{ list.listNm }}" class="form-control"></a></td>
+						    			<td>
+						    				<select>
+							                    <option value="A" {% if list.state == 'A' %} selected="selected" {% endif %}>A</option>
+							                    <option value="C" {% if list.state == 'C' %} selected="selected" {% endif %}>C</option>
+							                    <option value="R" {% if list.state == 'R' %} selected="selected" {% endif %}>R</option>
+						                    </select>
+						    			</td>
+						    			<input type="hidden">				                	
+						    		</tr>
+						    	{% endfor %}
+						        </tbody>
+						    </table>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="form-group">
+							<button type="button" class="btn btn-primary pull-right" id="change-list">Change</button>
+							<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+						</div>						
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>		
+	</div>
+	<div class="col-sm-5" style="text-align: center; margin-top: 40px;">
+		<div class="col-sm-5">
+			<button type="button" class="btn btn-info btn" data-toggle="modal" data-target="#create-group-modal">Create Group</button>
+			<!-- Modal -->
+			<div id="create-group-modal" class="modal fade container" role="dialog">
+				<div class="modal-dialog">
+				<!-- Modal content-->
+					<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Create Group.</h4>
+					</div>
+					<div class="modal-body">
+						<!-- <table id="modalTbl"></table> -->
+						<input class="form-control" type="text" id="create-modal-group">
+					</div>
+					<div class="modal-footer">
+						<div class="form-group">
+							<button type="button" id="create-group-ok" class="pull-right btn btn-primary">Create</button>
+							<button type="button"  id="create-group-close" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-5 col-sm-offset-2">
+			<button type="button" class="btn btn-info btn" data-toggle="modal" data-target="#select-group-modal">Select Group</button>
+			<!-- Modal -->
+			<div id="select-group-modal" class="modal fade container" role="dialog">
+				<div class="modal-dialog">
+				<!-- Modal content-->
+					<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Select your Group.</h4>
+					</div>
+					<div class="modal-body">
+						<!-- <table id="modalTbl"></table> -->
+						<select class="form-group">
+							{% for option in jsonGrp %}
+								<option>{{option.grpName}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="modal-footer">
+						<div class="form-group">
+							<button type="button" id="select-group-ok" class="pull-right btn btn-primary">Select</button>
+							<button type="button"  id="select-group-close" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	</div>	
+</div>
+<link href="{{ url_for('static', filename='css/mainForm.css') }}" rel="stylesheet">
+{% endblock %}
+
+
+{% block footer %}
+	{% include 'footer.html' %}
+{% endblock %}

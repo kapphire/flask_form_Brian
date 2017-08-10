@@ -1,0 +1,46 @@
+.subHead {
+	margin-top: 100px;
+	text-align: center;
+	background-color: transparent;
+}
+
+.subHead h1 {
+	font-size: 25px;
+}
+
+.subHead .btn {
+	padding: 3px 12px;
+	font-size: 15px;
+}
+.custab{
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5% 0;
+    box-shadow: 3px 3px 2px #ccc;
+    transition: 0.5s;
+    }
+.custab:hover{
+    box-shadow: 3px 3px 0px transparent;
+    transition: 0.5s;
+    }
+
+.btn-group {  
+    white-space: nowrap;              
+}
+.btn-group .btn {  
+    float: none;
+    display: inline-block;
+}
+ .btn + .dropdown-toggle { 
+    margin-left: -4px;
+}
+
+.table-responsive {
+  overflow-y: visible !important;
+}
+
+.subHeadBtn {
+    margin-top: 100px;
+    text-align: center;
+    background-color: transparent;
+}

@@ -1,0 +1,33 @@
+.container .subHead h1 
+{
+    font-family: 'Allerta Stencil'; color: grey; font-size: 25PX
+}
+
+.container .subHead p
+{
+	font-family: 'Allerta Stencil';
+}
+
+table tr.selected 
+{
+	font-style: italic;}
+
+.div-content 
+{
+	min-height: 500px;
+}
+
+h2 
+{
+	font-family: 'Allerta Stencil'; font-size: 25px; color: green;
+}
+
+tr 
+{
+	text-align: center;
+}
+
+th 
+{
+	text-align: center;
+}
